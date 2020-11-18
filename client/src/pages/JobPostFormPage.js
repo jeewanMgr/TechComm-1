@@ -10,6 +10,7 @@ class JobPostFormPage extends React.Component {
     postType: 'job'
   }
 
+  /*
   titleChanged = (event) => {
     this.setState({
       title: event.target.value
@@ -21,6 +22,14 @@ class JobPostFormPage extends React.Component {
       content: event.target.value
     });
   }
+  */
+ handleChange = (event) => {
+   const value = event.target.value;
+   this.setState({
+     ...this.state,
+     [event.target.name]: value
+   });
+ }
 
   savePost = (event) => {
     fetch("/api/posts/", {
@@ -29,10 +38,11 @@ class JobPostFormPage extends React.Component {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({title: this.state.title, content: this.state.content, postType: this.state.postType}),
+      body: JSON.stringify(this.state),
     })
       .then(res => {
         if(res.ok) {
+          console.log(JSON.stringify(this.state));
           return res.json()
         }
 
@@ -42,11 +52,13 @@ class JobPostFormPage extends React.Component {
         this.setState({
           success: true,
         });
+        console.log(JSON.stringify(this.state));
       })
       .catch(err => {
         this.setState({
           error: true,
         });
+        console.log(JSON.stringify(this.state));
       });
   }
 
@@ -71,10 +83,11 @@ class JobPostFormPage extends React.Component {
           </label>
           <input
             type="text"
+            name="title"
             placeholder="Insert the title of your post"
             value={this.state.title}
             className="form-control mr-3 rounded"
-            onChange={this.titleChanged}
+            onChange={this.handleChange}
           />
         </div>
         <div className="input-group">
@@ -82,11 +95,12 @@ class JobPostFormPage extends React.Component {
             Body:
           </label>
           <input 
-            type="text" 
+            type="text"
+            name="content"
             placeholder="Add your words of wisdom here..." 
             value={this.state.content}
             className="form-control mr-3 rounded"
-            onChange={this.contentChanged}
+            onChange={this.handleChange}
           />
           <button className="btn btn-primary" onClick={this.savePost}>Save Post</button>
         </div>
