@@ -22,6 +22,15 @@ router.get('/', (req,res) => {
     .then(posts => res.json(posts));
 });
 
+router.get('/jobs', (req,res) => {
+  Post.findAll({ where: { postType: 'job' } })
+    .then(posts => res.json(posts));
+});
+
+router.get('/rents', (req,res) => {
+  Post.findAll({ where: { postType: 'rent' } })
+    .then(posts => res.json(posts));
+});
 
 router.post('/',
   passport.isAuthenticated(),
